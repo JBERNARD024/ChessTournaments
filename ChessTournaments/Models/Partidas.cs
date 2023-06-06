@@ -28,9 +28,9 @@ namespace ChessTournaments.Models
         [ForeignKey(nameof(Jogador1))]
         [Display(Name = "Jogador Peças Brancas")]
 
-        public int JogadorFK1 { get; set; }
+        public int? JogadorFK1 { get; set; }
 
-        public Pessoa Jogador1 { get; set; }
+        public Pessoa? Jogador1 { get; set; }
 
         ///<summary>
         ///FK para o Jogador 2
@@ -39,9 +39,9 @@ namespace ChessTournaments.Models
         [ForeignKey(nameof(Jogador2))]
         [Display(Name = "Jogador Peças Pretas")]
 
-        public int JogadorFK2 { get; set; }
+        public int? JogadorFK2 { get; set; }
 
-        public Pessoa Jogador2 { get; set; }
+        public Pessoa? Jogador2 { get; set; }
 
         //********************************
 

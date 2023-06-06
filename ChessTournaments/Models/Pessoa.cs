@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace ChessTournaments.Models
@@ -88,7 +89,7 @@ namespace ChessTournaments.Models
         /// <summary>
         /// Código Postal da Morada da Pessoa
         /// </summary>
-        [DisplayName("Código Postal")]
+        [Display(Name ="Código Postal")]
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
         [StringLength(50, MinimumLength = 8, ErrorMessage = "O {0} deve ter {1} dígitos.")]
         [RegularExpression("[1-9]{1}[0-9]{3}-[0-9]{3}", ErrorMessage = "O {0} deve ter o formato XXXX-XXX")]

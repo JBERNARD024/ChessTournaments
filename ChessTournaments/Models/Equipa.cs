@@ -37,4 +37,3 @@ namespace ChessTournaments.Models
         public DateTime dataFundacao { get; set; }
     }
 }
-}
