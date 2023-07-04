@@ -24,7 +24,7 @@ namespace ChessTournaments.Models
         /// </summary>
         [Display(Name = "Código Postal")]
         [StringLength(50, MinimumLength = 8, ErrorMessage = "O {0} deve ter {1} dígitos.")]
-        [RegularExpression("[1-9]{1}[0-9]{3}-[0-9]{3}[A-Za-z]", ErrorMessage = "O {0} deve ter o formato XXXX-XXX")]
+        [RegularExpression("[1-9]{1}[0-9]{3}-[0-9]{3}", ErrorMessage = "O {0} deve ter o formato XXXX-XXX")]
         public string CodigoPostal { get; set; }
 
         ///<summary>

@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ChessTournaments.Data;
 using ChessTournaments.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace ChessTournaments.Controllers
 {
     public class PessoaController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PessoaController(ApplicationDbContext context)
+        public PessoaController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Pessoa
@@ -36,6 +39,7 @@ namespace ChessTournaments.Controllers
 
             var pessoa = await _context.Pessoa
                 .Include(p => p.Equipa)
+                .Include(f => f.ListaFotos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pessoa == null)
             {
@@ -48,7 +52,7 @@ namespace ChessTournaments.Controllers
         // GET: Pessoa/Create
         public IActionResult Create()
         {
-            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Morada");
+            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Nome");
             return View();
         }
 
@@ -57,15 +61,88 @@ namespace ChessTournaments.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Primeiro_Nome,Ultimo_Nome,Username,Password,DataNascimento,Sexo,Nacionalidade,Email,Telemovel,Morada,CodPostal,isFuncionario,EquipaFK,Score")] Pessoa pessoa)
+        public async Task<IActionResult> Create([Bind("Id,Primeiro_Nome,Ultimo_Nome,Username,Password,DataNascimento,Sexo,Nacionalidade,Email,Telemovel,Morada,CodPostal,isFuncionario,EquipaFK,Score, ListaFotos")] Pessoa pessoa, IFormFile imagemPessoa)
         {
-            if (ModelState.IsValid)
+            //variáveis auxiliares
+            string nomeFoto = "";
+            bool existeFoto = false;
+
+            if(imagemPessoa == null)
             {
-                _context.Add(pessoa);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // o utilizador não fez upload de uma imagem
+                // vamos adicionar uma imagem pré-definida à pessoa
+                pessoa.ListaFotos
+                        .Add(new Fotografia
+                        {
+                            Data = DateTime.Now,
+                            Local = "SemImagem",
+                            NomeFicheiro = "ImagemDefault.jpeg"
+                        });
             }
-            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Morada", pessoa.EquipaFK);
+            else
+            {
+                if(imagemPessoa.ContentType != "image/jpg" &&
+                    imagemPessoa.ContentType != "image/png" && imagemPessoa.ContentType != "image/jpeg")
+                {
+                    pessoa.ListaFotos
+                        .Add(new Fotografia
+                        {
+                            Data = DateTime.Now,
+                            Local = "SemImagem",
+                            NomeFicheiro = "ImagemDefault.jpeg"
+                        });
+                }
+                else
+                {
+                    Guid g = Guid.NewGuid();
+                    nomeFoto = g.ToString();
+                    string extensaoNomeFoto = Path.GetExtension(imagemPessoa.FileName).ToLower();
+                    nomeFoto += extensaoNomeFoto;
+
+                    pessoa.ListaFotos
+                            .Add(new Fotografia
+                            {
+                                Data = DateTime.Now,
+                                Local = "",
+                                NomeFicheiro = nomeFoto
+                                });
+                    existeFoto = true;
+                }
+            }
+
+            if (ModelState.IsValid) {
+                try
+                {
+
+                    _context.Add(pessoa);
+                    await _context.SaveChangesAsync();
+                    if (existeFoto)
+                    {
+                        string nomeLocalizaoImagem = _webHostEnvironment.WebRootPath;
+                        nomeLocalizaoImagem = Path.Combine(nomeLocalizaoImagem, "imagens");
+
+                        if (!Directory.Exists(nomeLocalizaoImagem))
+                        {
+                            Directory.CreateDirectory(nomeLocalizaoImagem);
+                        }
+
+                        string nomeDoFicheiro = Path.Combine(nomeLocalizaoImagem, nomeFoto);
+                        //guardar o ficheiro
+                        using var stream = new FileStream(nomeDoFicheiro, FileMode.Create);
+                        await imagemPessoa.CopyToAsync(stream);
+                    }
+
+                    return RedirectToAction(nameof(Index));
+
+                }
+                catch(Exception) {
+                    ModelState.AddModelError("", "Ocorreu um erro com a adição dos dados "
+                        + pessoa.Primeiro_Nome);
+                    //throw;
+                }  
+
+            }
+            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Nome", pessoa.EquipaFK);
             return View(pessoa);
         }
 

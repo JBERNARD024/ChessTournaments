@@ -110,9 +110,9 @@ namespace ChessTournaments.Models
         [ForeignKey(nameof(Equipa))]
         [Display(Name = "Equipa")]
 
-        public int EquipaFK { get; set; }
+        public int? EquipaFK { get; set; }
 
-        public Equipa Equipa { get; set; }
+        public Equipa? Equipa { get; set; }
 
         /// <summary>
         /// Pontuação Global do Jogador
@@ -125,6 +125,6 @@ namespace ChessTournaments.Models
         /// <summary>
         /// Lista das Fotografias associadas a uma Pessoa
         /// </summary>
-        public ICollection<Fotografia> ListaFotos { get; set; }
+        public ICollection<Fotografia>? ListaFotos { get; set; }
     }
 }
