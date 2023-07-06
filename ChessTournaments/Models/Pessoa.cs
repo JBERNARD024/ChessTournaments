@@ -19,6 +19,7 @@ namespace ChessTournaments.Models
 
         [Display(Name = "Primeiro Nome")]
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(50)]
         public string Primeiro_Nome { get; set; }
 
         /// <summary>
@@ -27,6 +28,7 @@ namespace ChessTournaments.Models
 
         [Display(Name = "Último Nome")]
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(50)]
         public string Ultimo_Nome { get; set; }
 
         ///<summary>
@@ -35,6 +37,7 @@ namespace ChessTournaments.Models
 
         [Display(Name = "Nome do Utilizador")]
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(50)]
         public string Username { get; set; }
 
         /// <summary>
@@ -49,7 +52,7 @@ namespace ChessTournaments.Models
 
         [Display(Name = "Data de Nascimento")]
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNascimento { get; set; }
 
         /// <summary>
@@ -62,6 +65,7 @@ namespace ChessTournaments.Models
         ///Nacionalidade da Pessoa
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [StringLength(50)]
         public string Nacionalidade { get; set; }
 
         /// <summary>
@@ -69,6 +73,8 @@ namespace ChessTournaments.Models
         /// </summary>
         [EmailAddress(ErrorMessage = "O {0} não está corretamente escrito")]
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
+        [RegularExpression("[a-z._0-9]+@gmail.com", ErrorMessage = "O {0} tem de ser do gmail")]
+        [StringLength(50)]
         public string Email { get; set; }
 
         /// <summary>
@@ -91,8 +97,9 @@ namespace ChessTournaments.Models
         /// </summary>
         [Display(Name ="Código Postal")]
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
-        [StringLength(50, MinimumLength = 8, ErrorMessage = "O {0} deve ter {1} dígitos.")]
-        [RegularExpression("[1-9]{1}[0-9]{3}-[0-9]{3}", ErrorMessage = "O {0} deve ter o formato XXXX-XXX")]
+        [StringLength(30, MinimumLength = 8, ErrorMessage = "O {0} deve ter {1} dígitos.")]
+        [RegularExpression("[1-9][0-9]{3}-[0-9]{3} [A-ZÇÁÉÍÓÚÊÂÎÔÛÀÃÕ ]+",
+                         ErrorMessage = "O {0} tem de ser da forma XXXX-XXX Localidade")]
         public string CodPostal { get; set; }
 
 
