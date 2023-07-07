@@ -80,14 +80,11 @@
             @Html.DisplayNameFor(model => model.Equipa)
         </dt>
         <dd class="col-sm-10">
-            <a asp-action="Detalhes"
+            <a asp-action="Details"
                asp-controller="Equipa"
                asp-route-id="@Model?.Equipa.Id">
                 @Html.DisplayFor(model => model.Equipa.Nome)
             </a>
-        </dd>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipa.Morada)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Score)

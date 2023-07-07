@@ -7,7 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 <h2>Cria um novo utilizador.</h2>
 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-    <input asp-for="Input.Pessoa.Email" type="hidden" />
+    <input asp-for="Input.Pessoa.Email" value="a@gmail.com" type="hidden" />
     <div class="row">
         <div class="col-md-6">
             <hr />
@@ -26,10 +26,10 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                <hr />
             </div>
 
             <div class="col-md-6">
+                <hr />
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Pessoa.Primeiro_Nome" class="form-control" />
                     <label asp-for="Input.Pessoa.Primeiro_Nome"></label>
@@ -48,6 +48,15 @@
                     <span asp-validation-for="Input.Pessoa.Username" class="text-danger"></span>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <label asp-for="Input.Pessoa.Sexo" ></label>
+                    <select asp-for="Input.Pessoa.Sexo" class="form-control">
+                        <option></option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                    <span asp-validation-for="Input.Pessoa.Sexo" class="text-danger"></span>
+                </div>
 
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Pessoa.Nacionalidade" class="form-control" />
@@ -71,6 +80,16 @@
                     <input asp-for="Input.Pessoa.Telemovel" class="form-control" />
                     <label asp-for="Input.Pessoa.Telemovel"></label>
                     <span asp-validation-for="Input.Pessoa.Telemovel" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <label asp-for="Input.Pessoa.isFuncionario"></label>
+                    <select asp-for="Input.Pessoa.isFuncionario" class="form-control">
+                        <option></option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                    <span asp-validation-for="Input.Pessoa.isFuncionario" class="text-danger"></span>
                 </div>
             </div>
             <hr />
