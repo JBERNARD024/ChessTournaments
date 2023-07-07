@@ -40,13 +40,7 @@ namespace ChessTournaments.Models
         [StringLength(50)]
         public string Username { get; set; }
 
-        /// <summary>
-        /// Password da Pessoa
-        /// </summary> 
-        [Required(ErrorMessage = "O {0} é de preenchimento obrigatório")]
-        public string Password { get; set; }
-
-        /// <summary>
+         /// <summary>
         /// Data de nascimento da Pessoa
         /// </summary>
 

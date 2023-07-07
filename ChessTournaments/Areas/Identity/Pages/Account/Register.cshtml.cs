@@ -161,7 +161,7 @@ namespace ChessTournaments.Areas.Identity.Pages.Account
                         _context.Add(Input.Pessoa);
                         await _context.SaveChangesAsync();
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         throw;
                     }

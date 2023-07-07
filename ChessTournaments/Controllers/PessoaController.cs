@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ChessTournaments.Data;
 using ChessTournaments.Models;
-using Microsoft.AspNetCore.Hosting;
 
 namespace ChessTournaments.Controllers
 {
@@ -61,16 +60,17 @@ namespace ChessTournaments.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Primeiro_Nome,Ultimo_Nome,Username,Password,DataNascimento,Sexo,Nacionalidade,Email,Telemovel,Morada,CodPostal,isFuncionario,EquipaFK,Score, ListaFotos")] Pessoa pessoa, IFormFile imagemPessoa)
+        public async Task<IActionResult> Create([Bind("Id,Primeiro_Nome,Ultimo_Nome,Username,DataNascimento,Sexo,Nacionalidade,Email,Telemovel,Morada,CodPostal,isFuncionario,EquipaFK,Score")] Pessoa pessoa, IFormFile imagemPessoa)
         {
             //variáveis auxiliares
+
             string nomeFoto = "";
             bool existeFoto = false;
 
-            if(imagemPessoa == null)
+            if (imagemPessoa == null)
             {
-                // o utilizador não fez upload de uma imagem
-                // vamos adicionar uma imagem pré-definida à pessoa
+                // O Utilizador não fez upload de uma imagem
+                // É adicionada uma imagem pré-definida à pessoa
                 pessoa.ListaFotos
                         .Add(new Fotografia
                         {
@@ -81,7 +81,7 @@ namespace ChessTournaments.Controllers
             }
             else
             {
-                if(imagemPessoa.ContentType != "image/jpg" &&
+                if (imagemPessoa.ContentType != "image/jpg" &&
                     imagemPessoa.ContentType != "image/png" && imagemPessoa.ContentType != "image/jpeg")
                 {
                     pessoa.ListaFotos
@@ -105,12 +105,13 @@ namespace ChessTournaments.Controllers
                                 Data = DateTime.Now,
                                 Local = "",
                                 NomeFicheiro = nomeFoto
-                                });
+                            });
                     existeFoto = true;
                 }
             }
 
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 try
                 {
 
@@ -135,12 +136,12 @@ namespace ChessTournaments.Controllers
                     return RedirectToAction(nameof(Index));
 
                 }
-                catch(Exception) {
+                catch (Exception)
+                {
                     ModelState.AddModelError("", "Ocorreu um erro com a adição dos dados "
                         + pessoa.Primeiro_Nome);
                     //throw;
-                }  
-
+                }
             }
             ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Nome", pessoa.EquipaFK);
             return View(pessoa);
@@ -159,7 +160,7 @@ namespace ChessTournaments.Controllers
             {
                 return NotFound();
             }
-            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Morada", pessoa.EquipaFK);
+            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Nome", pessoa.EquipaFK);
             return View(pessoa);
         }
 
@@ -168,7 +169,7 @@ namespace ChessTournaments.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Primeiro_Nome,Ultimo_Nome,Username,Password,DataNascimento,Sexo,Nacionalidade,Email,Telemovel,Morada,CodPostal,isFuncionario,EquipaFK,Score")] Pessoa pessoa)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Primeiro_Nome,Ultimo_Nome,Username,DataNascimento,Sexo,Nacionalidade,Email,Telemovel,Morada,CodPostal,isFuncionario,EquipaFK,Score")] Pessoa pessoa)
         {
             if (id != pessoa.Id)
             {
@@ -195,7 +196,7 @@ namespace ChessTournaments.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Morada", pessoa.EquipaFK);
+            ViewData["EquipaFK"] = new SelectList(_context.Equipa, "Id", "Nome", pessoa.EquipaFK);
             return View(pessoa);
         }
 
