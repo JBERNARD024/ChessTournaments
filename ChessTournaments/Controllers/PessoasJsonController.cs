@@ -29,7 +29,7 @@ namespace ChessTournaments.Controllers
           {
               return NotFound();
           }
-            return await _context.Pessoa.Include(p => p.Equipa).Include(f => f.ListaFotos).ToListAsync();
+            return await _context.Pessoa.Include(p => p.Equipa).Include(f => f.ListaFotos).OrderByDescending(p => p.Score).ToListAsync();
         }
 
         // GET: api/PessoasJson/5

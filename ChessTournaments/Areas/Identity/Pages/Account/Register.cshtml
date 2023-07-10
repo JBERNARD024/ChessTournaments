@@ -86,10 +86,16 @@
                     <label asp-for="Input.Pessoa.isFuncionario"></label>
                     <select asp-for="Input.Pessoa.isFuncionario" class="form-control">
                         <option></option>
-                        <option value="M">Masculino</option>
-                        <option value="F">Feminino</option>
+                        <option value="S">Sim</option>
+                        <option value="N">Não</option>
                     </select>
                     <span asp-validation-for="Input.Pessoa.isFuncionario" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Pessoa.EquipaFK" class="form-control" />
+                    <label asp-for="Input.Pessoa.EquipaFK"></label>
+                    <span asp-validation-for="Input.Pessoa.EquipaFK" class="text-danger"></span>
                 </div>
             </div>
             <hr />
